@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI-powered celebration and community event planner. Create budgets, timelines, and vendor checklists in under 2 minutes." />
+  <title>Celebration Planner — AI Event Planning</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎉</text></svg>" />
+</head>
+<body>
+  <!-- ──────────────────────────── HEADER ──────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="logo">🎉 Celebration Planner</span>
+      <button class="btn-ghost" id="btnTheme" aria-label="Toggle dark mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+
+    <!-- ──────────────── SETUP SECTION ──────────────── -->
+    <section id="secSetup" class="setup-section">
+      <h1 class="page-title">Plan your celebration</h1>
+      <p class="page-sub">Get a budget, timeline and vendor checklist in under 2 minutes.</p>
+
+      <form id="formSetup" novalidate>
+        <!-- Event type -->
+        <fieldset class="fieldset">
+          <legend class="legend">Event type</legend>
+          <div class="type-pills">
+            <label class="pill">
+              <input type="radio" name="eventType" value="wedding" required />
+              <span>💍 Wedding</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="eventType" value="birthday" />
+              <span>🎂 Birthday</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="eventType" value="community" />
+              <span>🏘️ Community</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Details row -->
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="eventName">Event name</label>
+            <input id="eventName" type="text" placeholder="Sharma Wedding" required maxlength="80" />
+          </div>
+          <div class="form-field">
+            <label for="eventDate">Event date</label>
+            <input id="eventDate" type="date" required />
+          </div>
+          <div class="form-field">
+            <label for="guestCount">Number of guests</label>
+            <input id="guestCount" type="number" min="1" max="10000" placeholder="150" required />
+          </div>
+          <div class="form-field">
+            <label for="budget">Total budget</label>
+            <div class="input-row">
+              <select id="currency" aria-label="Currency">
+                <option value="INR">₹ INR</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+                <option value="GBP">£ GBP</option>
+              </select>
+              <input id="budget" type="number" min="1" placeholder="500000" required />
+            </div>
+          </div>
+          <div class="form-field span2">
+            <label for="notes">Notes (venue, theme, dietary needs…)</label>
+            <textarea id="notes" rows="3" placeholder="Outdoor garden venue, vegetarian menu, Rajasthani theme" maxlength="500"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btnGenerate">✨ Generate My Plan</button>
+      </form>
+    </section>
+
+    <!-- ──────────────── PLAN SECTION (hidden until generated) ──────────────── -->
+    <section id="secPlan" class="plan-section hidden" aria-live="polite">
+      <h2 class="event-heading" id="eventTitle"></h2>
+
+      <!-- Stat tiles -->
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-tile">
+          <div class="stat-label">Days to go</div>
+          <div class="stat-value" id="statDays">—</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Total budget</div>
+          <div class="stat-value" id="statBudget">—</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Spent so far</div>
+          <div class="stat-value" id="statSpent">—</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Tasks done</div>
+          <div class="stat-value" id="statTasks">—</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <nav class="tab-nav" role="tablist">
+        <button class="tab active" role="tab" data-tab="budget" aria-selected="true">💰 Budget</button>
+        <button class="tab" role="tab" data-tab="timeline" aria-selected="false">📅 Timeline</button>
+        <button class="tab" role="tab" data-tab="vendors" aria-selected="false">🤝 Vendors</button>
+        <button class="tab" role="tab" data-tab="ideas" aria-selected="false">💡 Ideas</button>
+        <button class="tab" role="tab" data-tab="chat" aria-selected="false">🤖 Ask AI</button>
+      </nav>
+
+      <!-- ── Budget Tab ── -->
+      <div class="tab-panel active" id="tab-budget" role="tabpanel">
+        <div class="panel-header">
+          <h2>Budget breakdown</h2>
+          <div class="panel-actions">
+            <button class="btn-secondary" id="btnExportCSV">⬇ Export CSV</button>
+            <button class="btn-secondary" id="btnPrint">🖨 Print</button>
+          </div>
+        </div>
+        <p class="hint">Enter actual spend in the <strong>Spent</strong> column to track your budget.</p>
+        <div class="table-wrap">
+          <table class="budget-table" id="budgetTable">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Alloc %</th>
+                <th>Planned</th>
+                <th>Spent</th>
+                <th>Remaining</th>
+                <th>Progress</th>
+              </tr>
+            </thead>
+            <tbody id="budgetBody"></tbody>
+            <tfoot id="budgetFoot"></tfoot>
+          </table>
+        </div>
+        <p class="ai-label">💡 Allocations are templates. Adjust the % column to fit your event.</p>
+      </div>
+
+      <!-- ── Timeline Tab ── -->
+      <div class="tab-panel hidden" id="tab-timeline" role="tabpanel">
+        <div class="panel-header">
+          <h2>Planning timeline</h2>
+        </div>
+        <p class="hint">Tick tasks as you complete them. Overdue tasks are highlighted.</p>
+        <ul class="timeline-list" id="timelineList"></ul>
+      </div>
+
+      <!-- ── Vendors Tab ── -->
+      <div class="tab-panel hidden" id="tab-vendors" role="tabpanel">
+        <div class="panel-header">
+          <h2>Vendor checklist</h2>
+        </div>
+        <p class="hint">Track each supplier from first contact to payment.</p>
+        <ul class="vendor-list" id="vendorList"></ul>
+        <p class="ai-label">⚠ Vendor names and contacts are suggestions. Always confirm prices directly with real vendors.</p>
+      </div>
+
+      <!-- ── Ideas Tab ── -->
+      <div class="tab-panel hidden" id="tab-ideas" role="tabpanel">
+        <div class="panel-header">
+          <h2>AI-generated ideas</h2>
+          <button class="btn-primary" id="btnIdeas">✨ Generate ideas</button>
+        </div>
+        <p class="ai-label">Ideas to explore. Confirm prices with real vendors before booking.</p>
+        <div id="ideasGrid" class="ideas-grid"></div>
+        <div id="ideasStatus" class="status-msg hidden"></div>
+      </div>
+
+      <!-- ── Chat Tab ── -->
+      <div class="tab-panel hidden" id="tab-chat" role="tabpanel">
+        <div class="panel-header">
+          <h2>Ask AI anything</h2>
+        </div>
+        <p class="ai-label">Ask about invites, speeches, rain plans, budget cuts — AI answers in the context of your event.</p>
+        <div class="chat-wrap">
+          <div class="chat-messages" id="chatMessages" aria-live="polite" aria-label="Chat messages"></div>
+          <div class="chat-suggestions" id="chatSuggestions">
+            <button class="chip" data-q="What should I do if it rains on the day?">☔ Rain plan</button>
+            <button class="chip" data-q="How do I write a welcome speech?">🎤 Welcome speech</button>
+            <button class="chip" data-q="How can I reduce my budget by 20%?">✂ Cut costs</button>
+            <button class="chip" data-q="What are some unique decoration ideas?">🎨 Décor ideas</button>
+          </div>
+          <form class="chat-form" id="chatForm">
+            <input type="text" id="chatInput" placeholder="Ask about your event…" maxlength="300" aria-label="Your question" autocomplete="off" />
+            <button type="submit" class="btn-primary" id="btnSend">Send</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- New event button -->
+      <div class="new-event-wrap">
+        <button class="btn-ghost" id="btnNewEvent">← Plan another event</button>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Celebration Planner · AI suggestions are ideas, not professional advice · Built for SIH 2026</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
