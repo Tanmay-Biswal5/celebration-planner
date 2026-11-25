@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f3eb">
+<meta name="description" content="A little birthday page, made with love for Byomakesh (Muna).">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A little something for Muna ♥">
+<meta property="og:description" content="A birthday page made with love for Byomakesh (Muna). Open it for memories, notes and family wishes.">
+<meta property="og:image" content="https://tanmay-biswal5.github.io/celebration-planner/dad-birthday/images/cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<title>For Byomakesh (Muna) — with love</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23f7f3eb'/%3E%3Ctext x='50' y='69' font-size='65' text-anchor='middle' fill='%239e5139'%3E%E2%99%A5%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><a class="wordmark" href="#top">a little something <span>♥</span></a><a class="topbar-link" href="#memories">The memories ↓</a></header>
+<main id="top">
+<section class="hero section-wrap">
+<div class="hero-copy"><p class="eyebrow" id="intro-line"></p><h1>Happy birthday,<br><span id="dad-name"></span></h1><p class="hero-message" id="birthday-message"></p><div class="hero-actions"><a class="text-link" href="#memories">Take a look around ↓</a><button class="button button-quiet" id="share-button" type="button">Share with family ↗</button></div></div>
+<figure class="photo-card"><div class="photo-frame" data-photo-frame><img id="hero-photo" src="images/cover-photo.jpg" alt="A favourite photograph of Dad"><div class="photo-fallback"><span>✳</span><p>A favourite photo of you<br>goes here.</p></div></div><figcaption>A favourite moment, kept close.</figcaption></figure>
+<span class="margin-note">for all the little things<br>and the big ones, too</span>
+</section>
+<section class="intro-note section-wrap" id="note"><p class="section-kicker">A note for you</p><div class="intro-note-grid"><h2>Today is yours.<br>And so is this little page.</h2><div><p id="note-message"></p><p class="signature" id="signature"></p></div></div></section>
+<section class="content-section section-wrap" id="memories"><div class="section-heading"><div><p class="section-kicker">The good old days (and the new ones)</p><h2>Our favourite memories</h2></div><p class="section-aside">A few moments we'd happily live twice.</p></div><div class="photo-grid" id="photo-grid"></div></section>
+<section class="reasons-section"><div class="section-wrap content-section"><div class="section-heading"><div><p class="section-kicker">No big speech. Just the truth.</p><h2>Little reasons, big love</h2></div><p class="section-aside">Some serious. Some not so serious.</p></div><div class="reasons-grid" id="reasons-grid"></div></div></section>
+<section class="surprise-section section-wrap"><div class="surprise-paper"><p class="section-kicker">One more thing</p><h2>A small surprise,<br>just for you.</h2><button class="button button-primary" id="surprise-button" type="button">Open your surprise ↗</button><p class="surprise-message" id="surprise-message" hidden></p></div></section>
+<section class="content-section section-wrap timeline-section"><div class="section-heading"><div><p class="section-kicker">A life full of chapters</p><h2>A few moments along the way</h2></div><p class="section-aside">The story is still being written.</p></div><div class="timeline" id="timeline-list"></div></section>
+<section class="quiz-section"><div class="section-wrap content-section"><div class="section-heading"><div><p class="section-kicker">Family knowledge test</p><h2>How well do you know Muna?</h2></div><p class="section-aside">No prizes. Bragging rights only.</p></div><div class="quiz-card" id="quiz-card"><div class="quiz-topline"><span id="quiz-progress">Question 1</span><span class="quiz-progress-track"><span id="quiz-progress-fill"></span></span></div><div id="quiz-content"></div><div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div><button class="button button-primary" id="quiz-next" type="button" disabled>Next question</button></div></div></section>
+<section class="content-section section-wrap wishes-section" id="wishes"><div class="section-heading"><div><p class="section-kicker">A little love from all of us</p><h2>Wishes from the family</h2></div><p class="section-aside">Words worth keeping.</p></div><div class="wishes-grid" id="wishes-grid"></div><a class="button button-quiet" id="wish-form-button" href="#" target="_blank" rel="noopener" hidden>Add your wish ↗</a><p class="wishes-note">The best wishes are the ones that come straight from the heart.</p></section>
+</main>
+<footer class="footer"><p id="footer-credit"></p><a href="#top">Back to the top ↑</a></footer>
+<button class="music-toggle" id="music-toggle" type="button" hidden>♪ Music: off</button><audio id="background-music" src="audio/song.mp3" loop preload="none"></audio>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden><button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close photo">×</button><figure><img id="lightbox-image" alt=""><figcaption id="lightbox-caption"></figcaption></figure></div>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script><script src="data.js"></script><script src="script.js" defer></script>
+</body></html>
